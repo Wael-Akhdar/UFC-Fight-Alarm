@@ -2,7 +2,7 @@
 
 Dors tranquille : ton téléphone sonne quand ton combat UFC arrive.
 
-Site : **https://ufc-reveil.ufc-reveil.workers.dev**
+Site : **https://ufc-reveil.ufc-reveil.workers.dev** (en français et en anglais : bouton FR/EN en haut à droite, ou `?lang=en`)
 
 Le site suit la carte en direct (API publique d'ESPN). L'alarme sonne **dès que le combat juste avant le tien est terminé**, environ 10 min avant les walkouts.
 

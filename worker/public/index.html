@@ -19,6 +19,9 @@
   a{color:inherit}
   .wrap{max-width:760px;margin:0 auto;padding:0 16px 80px}
   header{padding:44px 0 20px}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .lang{background:var(--panel2);color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:5px 11px;font-size:12.5px;font-weight:750;letter-spacing:.04em}
+  .lang:hover{color:var(--text);border-color:var(--muted)}
   .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;font-size:13px;color:var(--muted)}
   .brand b{color:var(--red)}
   h1{font-size:clamp(30px,7vw,46px);line-height:1.05;margin:14px 0 10px;letter-spacing:-.02em}
@@ -149,16 +152,19 @@
 <body>
 <div class="wrap">
   <header>
-    <div class="brand">⏰ UFC <b>Réveil</b></div>
-    <h1>Dors. Ça sonne <em>quand ton combat arrive.</em></h1>
-    <p class="lead">L'alarme sonne quand le combat juste avant le tien se termine, même en silencieux.</p>
+    <div class="top">
+      <div class="brand" data-i18n="brand">⏰ UFC <b>Réveil</b></div>
+      <button class="lang" id="langBtn" type="button" aria-label="English version">EN</button>
+    </div>
+    <h1 data-i18n="h1">Dors. Ça sonne <em>quand ton combat arrive.</em></h1>
+    <p class="lead" data-i18n="lead">L'alarme sonne quand le combat juste avant le tien se termine, même en silencieux.</p>
   </header>
 
 
   <div class="search"><input id="q" type="search" placeholder="Rechercher un combattant (ex. Gane)…" autocomplete="off"></div>
-  <main id="list"><div class="empty">Chargement de la carte…</div></main>
+  <main id="list"><div class="empty" data-i18n="loading">Chargement de la carte…</div></main>
 
-  <footer>Données ESPN · heures estimées (<span id="tz"></span>)</footer>
+  <footer><span data-i18n="foot">Données ESPN · heures estimées</span> (<span id="tz"></span>)</footer>
 </div>
 
 <div class="night" id="night">
@@ -167,11 +173,11 @@
   <div class="fn" id="nFight"></div>
   <div class="stat" id="nStat"></div>
   <button class="stop" id="stop">STOP</button>
-  <div class="stay">NE QUITTE PAS CETTE PAGE<small>Laisse ton téléphone branché et allumé ici</small></div>
+  <div class="stay" data-i18n="stay">NE QUITTE PAS CETTE PAGE<small>Laisse ton téléphone branché et allumé ici</small></div>
   <div class="checks" id="checks"></div>
   <div class="nb">
-    <button class="btn" id="nTest">Tester le son</button>
-    <button class="btn" id="nCancel">Annuler le réveil</button>
+    <button class="btn" id="nTest" data-i18n="test">Tester le son</button>
+    <button class="btn" id="nCancel" data-i18n="cancelAlarm">Annuler le réveil</button>
   </div>
 </div>
 <div class="sheet" id="sheet">
@@ -179,21 +185,21 @@
     <button class="x" id="sClose" aria-label="Fermer">✕</button>
     <h2 id="sFight"></h2>
     <div class="tabs"><button data-os="ios">iPhone</button><button data-os="android">Android</button></div>
-    <ol id="guideIos">
+    <ol id="guideIos" data-i18n="guideIos">
       <li>Verrouillage auto → <b>Jamais</b><small>Réglages → Luminosité et affichage</small></li>
       <li>Coupe le <b>mode économie d'énergie</b></li>
       <li>Teste le son et <b>monte le volume</b></li>
       <li><b>Branche</b> ton iPhone et ne quitte pas la page</li>
     </ol>
-    <ol id="guideAndroid">
+    <ol id="guideAndroid" data-i18n="guideAndroid">
       <li>Mise en veille de l'écran → <b>10 min</b><small>Paramètres → Affichage</small></li>
       <li>Coupe l'<b>économie d'énergie</b></li>
       <li>Teste le son et <b>monte le volume</b></li>
       <li><b>Branche</b> ton téléphone et ne quitte pas la page</li>
     </ol>
     <div class="actions">
-      <button class="btn ghost big" id="sTest">🔊 Tester le son</button>
-      <button class="btn red big" id="sArm">Activer le réveil</button>
+      <button class="btn ghost big" id="sTest" data-i18n="testBig">🔊 Tester le son</button>
+      <button class="btn red big" id="sArm" data-i18n="arm">Activer le réveil</button>
     </div>
   </div>
 </div>
@@ -207,6 +213,119 @@ const store = {
   get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } },
   set(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, JSON.stringify(v)); } catch {} },
 };
+/* ---------- Langue : français ou anglais ---------- */
+const I18N = {
+  fr: {
+    title: "UFC Réveil",
+    desc: "Dors tranquille : ton téléphone sonne quand ton combat UFC arrive.",
+    brand: "⏰ UFC <b>Réveil</b>",
+    h1: "Dors. Ça sonne <em>quand ton combat arrive.</em>",
+    lead: "L'alarme sonne quand le combat juste avant le tien se termine, même en silencieux.",
+    search: "Rechercher un combattant (ex. Gane)…",
+    loading: "Chargement de la carte…",
+    foot: "Données ESPN · heures estimées",
+    wake: "🥊 RÉVEILLE-TOI !",
+    stay: "NE QUITTE PAS CETTE PAGE<small>Laisse ton téléphone branché et allumé ici</small>",
+    test: "Tester le son",
+    cancelAlarm: "Annuler le réveil",
+    close: "Fermer",
+    guideIos: "<li>Verrouillage auto → <b>Jamais</b><small>Réglages → Luminosité et affichage</small></li><li>Coupe le <b>mode économie d'énergie</b></li><li>Teste le son et <b>monte le volume</b></li><li><b>Branche</b> ton iPhone et ne quitte pas la page</li>",
+    guideAndroid: "<li>Mise en veille de l'écran → <b>10 min</b><small>Paramètres → Affichage</small></li><li>Coupe l'<b>économie d'énergie</b></li><li>Teste le son et <b>monte le volume</b></li><li><b>Branche</b> ton téléphone et ne quitte pas la page</li>",
+    testBig: "🔊 Tester le son",
+    arm: "Activer le réveil",
+    copied: "Copié ✓",
+    copyPrompt: "Copie ce code :",
+    unlockSound: "⚠️ Touche « Tester le son » pour autoriser l'alarme",
+    screenOff: "⚠️ L'écran risque de s'éteindre",
+    started: "🥊 TON COMBAT A COMMENCÉ !",
+    wakeUp: "🥊 RÉVEILLE-TOI ! Ton combat arrive",
+    noneLeft: "Plus aucun combat avant le tien",
+    left: (n) => `Encore ${n} combat${n > 1 ? "s" : ""} avant le tien`,
+    live: "en cours",
+    estimate: "estimation",
+    loadingShort: "Chargement…",
+    cancelled: "⚠️ Ce combat a été annulé. Pas de réveil.",
+    gone: "⚠️ Ce combat n'est plus sur la carte.",
+    goodFight: "Bon combat ! 🥊",
+    alarmCancelled: "Réveil annulé",
+    ringing: "🔊 Ça sonne ?",
+    tagCancelled: "Annulé",
+    tagDone: "Terminé",
+    imminent: "imminent",
+    armedBtn: "✓ Réveil activé",
+    wakeBtn: "⏰ Me réveiller",
+    liveNow: "En direct",
+    startsAt: "début",
+    noFight: (q) => `Aucun combat trouvé${q ? ` pour « ${q} »` : ""}.`,
+    loadErr: "Impossible de charger la carte. Nouvel essai dans quelques secondes…",
+    noNet: "⚠️ Pas de réseau, nouvel essai…",
+    reArm: "Touche « Tester le son » pour réactiver l'alarme",
+    switchTo: "EN", switchLabel: "English version",
+  },
+  en: {
+    title: "UFC Fight Alarm",
+    desc: "Sleep well: your phone rings when your UFC fight is up.",
+    brand: "⏰ UFC <b>Fight Alarm</b>",
+    h1: "Sleep. It rings <em>when your fight is up.</em>",
+    lead: "The alarm rings when the fight right before yours ends, even in silent mode.",
+    search: "Search for a fighter (e.g. Gane)…",
+    loading: "Loading the fight card…",
+    foot: "ESPN data · estimated times",
+    wake: "🥊 WAKE UP!",
+    stay: "DON'T LEAVE THIS PAGE<small>Keep your phone plugged in and the screen on</small>",
+    test: "Test the sound",
+    cancelAlarm: "Cancel the alarm",
+    close: "Close",
+    guideIos: "<li>Auto-Lock → <b>Never</b><small>Settings → Display &amp; Brightness</small></li><li>Turn off <b>Low Power Mode</b></li><li>Test the sound and <b>turn the volume up</b></li><li><b>Plug in</b> your iPhone and stay on this page</li>",
+    guideAndroid: "<li>Screen timeout → <b>10 min</b><small>Settings → Display</small></li><li>Turn off <b>Power saving</b></li><li>Test the sound and <b>turn the volume up</b></li><li><b>Plug in</b> your phone and stay on this page</li>",
+    testBig: "🔊 Test the sound",
+    arm: "Set the alarm",
+    copied: "Copied ✓",
+    copyPrompt: "Copy this code:",
+    unlockSound: "⚠️ Tap “Test the sound” to allow the alarm",
+    screenOff: "⚠️ The screen may turn off",
+    started: "🥊 YOUR FIGHT HAS STARTED!",
+    wakeUp: "🥊 WAKE UP! Your fight is next",
+    noneLeft: "No more fights before yours",
+    left: (n) => `${n} fight${n > 1 ? "s" : ""} left before yours`,
+    live: "now",
+    estimate: "estimate",
+    loadingShort: "Loading…",
+    cancelled: "⚠️ This fight was cancelled. No alarm.",
+    gone: "⚠️ This fight is no longer on the card.",
+    goodFight: "Enjoy the fight! 🥊",
+    alarmCancelled: "Alarm cancelled",
+    ringing: "🔊 Can you hear it?",
+    tagCancelled: "Cancelled",
+    tagDone: "Final",
+    imminent: "soon",
+    armedBtn: "✓ Alarm set",
+    wakeBtn: "⏰ Wake me up",
+    liveNow: "Live",
+    startsAt: "starts",
+    noFight: (q) => `No fight found${q ? ` for “${q}”` : ""}.`,
+    loadErr: "Couldn't load the fight card. Retrying in a few seconds…",
+    noNet: "⚠️ No network, retrying…",
+    reArm: "Tap “Test the sound” to turn the alarm back on",
+    switchTo: "FR", switchLabel: "Version française",
+  },
+};
+const urlLang = new URLSearchParams(location.search).get("lang");
+let LANG = ["fr", "en"].includes(urlLang) ? urlLang
+  : (() => { try { const s = JSON.parse(localStorage.getItem("lang")); if (s === "fr" || s === "en") return s; } catch {} return null; })()
+  || (/^fr\b/i.test(navigator.language || "") ? "fr" : "en");
+const t = (k, ...a) => { const v = I18N[LANG][k]; return typeof v === "function" ? v(...a) : v; };
+function applyLang() {
+  document.documentElement.lang = LANG;
+  document.title = t("title");
+  document.querySelector('meta[name="description"]').content = t("desc");
+  document.querySelectorAll("[data-i18n]").forEach((el) => (el.innerHTML = t(el.dataset.i18n)));
+  $("#q").placeholder = t("search");
+  $("#sClose").setAttribute("aria-label", t("close"));
+  $("#langBtn").textContent = t("switchTo");
+  $("#langBtn").setAttribute("aria-label", t("switchLabel"));
+}
+
 let pending = null; // combat choisi dans la fenêtre d'activation
 let data = null;
 let armed = store.get("armed", null); // {id, label}
@@ -215,7 +334,7 @@ let audioReady = false;
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const norm = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 const time = (ms) => new Date(ms).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-const day = (ms) => new Date(ms).toLocaleDateString([], { weekday: "long", day: "numeric", month: "long" });
+const day = (ms) => new Date(ms).toLocaleDateString(LANG, { weekday: "long", day: "numeric", month: "long" });
 const cancelled = (f) => /cancel|postpon/i.test(f.status + " " + f.detail);
 const label = (f) => f.names.join(" vs ");
 
@@ -224,7 +343,7 @@ function toast(msg) {
   clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove("show"), 2000);
 }
 async function copy(text) {
-  try { await navigator.clipboard.writeText(text); toast("Copié ✓"); } catch { prompt("Copie ce code :", text); }
+  try { await navigator.clipboard.writeText(text); toast(t("copied")); } catch { prompt(t("copyPrompt"), text); }
 }
 
 /* ---------- Son de l'alarme : WAV généré, joué par un <audio> (ignore le mode silencieux sur iPhone) ---------- */
@@ -253,7 +372,7 @@ async function unlockAudio() {           // doit être appelé dans un tap de l'
   try { audio.muted = true; await audio.play(); audio.pause(); audio.currentTime = 0; audio.muted = false; audioReady = true; } catch {}
 }
 function ring(msg) {
-  $("#bigMsg").textContent = msg || "🥊 RÉVEILLE-TOI !";
+  $("#bigMsg").textContent = msg || t("wake");
   $("#night").classList.add("on", "ringing");
   audio.currentTime = 0; audio.muted = false;
   audio.play().catch(() => {});
@@ -275,8 +394,8 @@ document.addEventListener("visibilitychange", () => { if (armed && document.visi
 /* ---------- Mode nuit ---------- */
 function renderChecks() {
   let h = "";
-  if (!audioReady) h += `<div class="ko">⚠️ Touche « Tester le son » pour autoriser l'alarme</div>`;
-  if (!IOS && !lock) h += `<div class="ko">⚠️ L'écran risque de s'éteindre</div>`;
+  if (!audioReady) h += `<div class="ko">${t("unlockSound")}</div>`;
+  if (!IOS && !lock) h += `<div class="ko">${t("screenOff")}</div>`;
   $("#checks").innerHTML = h;
 }
 function tick() { $("#clock").textContent = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }); }
@@ -308,13 +427,13 @@ function verdict() {
     if (!all) continue;
     if (cancelled(all)) return { kind: "cancel" };
     const i = act.findIndex((f) => f.id === armed.id), f = act[i], prev = act[i - 1];
-    if (f.state !== "pre") return { kind: "go", msg: "🥊 TON COMBAT A COMMENCÉ !" };
-    if (prev && prev.state === "post") return { kind: "go", msg: "🥊 RÉVEILLE-TOI ! Ton combat arrive" };
+    if (f.state !== "pre") return { kind: "go", msg: t("started") };
+    if (prev && prev.state === "post") return { kind: "go", msg: t("wakeUp") };
     const live = act.find((x) => x.state === "in");
     const left = act.slice(0, i).filter((x) => x.state !== "post").length;
-    let stat = left === 0 ? "Plus aucun combat avant le tien" : `Encore ${left} combat${left > 1 ? "s" : ""} avant le tien`;
-    if (live) stat += ` · en cours : ${label(live)} (R${live.round})`;
-    if (f.est) stat += ` · estimation ≈ ${time(f.est)}`;
+    let stat = left === 0 ? t("noneLeft") : t("left", left);
+    if (live) stat += ` · ${t("live")} : ${label(live)} (R${live.round})`;
+    if (f.est) stat += ` · ${t("estimate")} ≈ ${time(f.est)}`;
     return { kind: "wait", stat };
   }
   return { kind: "gone" };
@@ -324,32 +443,32 @@ function updateArmed() {
   $("#night").classList.add("on");
   $("#nFight").textContent = "⏰ " + armed.label;
   const v = verdict();
-  if (!v) { $("#nStat").textContent = "Chargement…"; return; }
+  if (!v) { $("#nStat").textContent = t("loadingShort"); return; }
   if (v.kind === "wait") $("#nStat").textContent = v.stat;
   if (v.kind === "go" && !$("#night").classList.contains("ringing")) ring(v.msg);
-  if (v.kind === "cancel") { $("#nStat").textContent = "⚠️ Ce combat a été annulé. Pas de réveil."; }
-  if (v.kind === "gone") { $("#nStat").textContent = "⚠️ Ce combat n'est plus sur la carte."; }
+  if (v.kind === "cancel") { $("#nStat").textContent = t("cancelled"); }
+  if (v.kind === "gone") { $("#nStat").textContent = t("gone"); }
   renderChecks();
 }
 
 $("#stop").onclick = () => {
   if (testing) { testing = false; silence(); if (!armed) $("#night").classList.remove("on"); return; }
-  disarm(); toast("Bon combat ! 🥊");
+  disarm(); toast(t("goodFight"));
 };
-$("#nTest").onclick = async () => { await unlockAudio(); if (armed) keepAwake(); testing = true; ring("🔊 Ça sonne ?"); };
-$("#nCancel").onclick = () => { disarm(); toast("Réveil annulé"); };
-$("#sTest").onclick = async () => { await unlockAudio(); testing = true; ring("🔊 Ça sonne ?"); $("#nFight").textContent = ""; $("#nStat").textContent = ""; };
+$("#nTest").onclick = async () => { await unlockAudio(); if (armed) keepAwake(); testing = true; ring(t("ringing")); };
+$("#nCancel").onclick = () => { disarm(); toast(t("alarmCancelled")); };
+$("#sTest").onclick = async () => { await unlockAudio(); testing = true; ring(t("ringing")); $("#nFight").textContent = ""; $("#nStat").textContent = ""; };
 $("#sArm").onclick = () => { $("#sheet").classList.remove("on"); if (pending) arm(pending); };
 $("#sClose").onclick = () => $("#sheet").classList.remove("on");
 $("#sheet").onclick = (e) => { if (e.target.id === "sheet") $("#sheet").classList.remove("on"); };
 
 /* ---------- Liste des combats ---------- */
 function status(f) {
-  if (cancelled(f)) return `<span class="tag off">Annulé</span>`;
+  if (cancelled(f)) return `<span class="tag off">${t("tagCancelled")}</span>`;
   if (f.state === "in") return `<div class="eta"><span class="tag live">Live</span>R${f.round} ${esc(f.clock)}</div>`;
-  if (f.state === "post") return `<span class="tag done">Terminé</span>`;
+  if (f.state === "post") return `<span class="tag done">${t("tagDone")}</span>`;
   const soon = f.est - Date.now() < 15 * 60000;
-  return `<div class="eta">≈ ${time(f.est)}<small>${soon ? "imminent" : "estimation"}</small></div>`;
+  return `<div class="eta">≈ ${time(f.est)}<small>${soon ? t("imminent") : t("estimate")}</small></div>`;
 }
 
 
@@ -366,7 +485,7 @@ function fightHTML(f, isMain) {
         <div class="meta">${esc(f.weight)}${rec ? " · " + esc(rec) : ""}</div>
       </div>
       <div class="side">${status(f)}
-        ${canWake ? `<button class="wake ${on ? "on" : ""}" data-act="toggle">${on ? "✓ Réveil activé" : "⏰ Me réveiller"}</button>` : ""}
+        ${canWake ? `<button class="wake ${on ? "on" : ""}" data-act="toggle">${on ? t("armedBtn") : t("wakeBtn")}</button>` : ""}
       </div>
     </div>
   </div>`;
@@ -386,11 +505,11 @@ function render() {
     const start = Math.min(...ev.fights.map((f) => Date.parse(f.date)));
     return `<section class="event">
       <div class="ev-head"><h2>${esc(ev.name)}</h2>
-        <span class="when">${live ? '<span class="live-dot"></span>En direct' : `${day(start)} · début ${time(start)}`}</span></div>
+        <span class="when">${live ? `<span class="live-dot"></span>${t("liveNow")}` : `${day(start)} · ${t("startsAt")} ${time(start)}`}</span></div>
       ${fights.map(({ f, isMain }) => fightHTML(f, isMain)).join("")}
     </section>`;
   }).join("");
-  list.innerHTML = html || `<div class="empty">Aucun combat trouvé${q ? ` pour « ${esc(q)} »` : ""}.</div>`;
+  list.innerHTML = html || `<div class="empty">${t("noFight", q && esc(q))}</div>`;
 }
 
 // La carte est lue directement chez ESPN depuis le téléphone (ESPN bloque souvent les serveurs).
@@ -418,8 +537,8 @@ async function load() {
   for (const src of [fromESPN, fromServer, fromESPN, fromServer]) {
     try { data = await src(); render(); updateArmed(); return; } catch (e) { err = e; }
   }
-  if (!data) $("#list").innerHTML = `<div class="err">Impossible de charger la carte. Nouvel essai dans quelques secondes…</div>`;
-  if (armed) $("#nStat").textContent = "⚠️ Pas de réseau, nouvel essai…";
+  if (!data) $("#list").innerHTML = `<div class="err">${t("loadErr")}</div>`;
+  if (armed) $("#nStat").textContent = t("noNet");
   setTimeout(load, 10000);
 }
 
@@ -439,7 +558,7 @@ $("#q").addEventListener("input", render);
 if (armed) {
   $("#night").classList.add("on");
   $("#nFight").textContent = "⏰ " + armed.label;
-  $("#nStat").textContent = "Touche « Tester le son » pour réactiver l'alarme";
+  $("#nStat").textContent = t("reArm");
   renderChecks();
 }
 
@@ -450,6 +569,16 @@ function showOS(os) {
 }
 document.querySelectorAll(".tabs button").forEach((b) => (b.onclick = () => showOS(b.dataset.os)));
 showOS(IOS ? "ios" : "android");
+
+applyLang(); $("#bigMsg").textContent = t("wake");
+$("#langBtn").onclick = () => {
+  LANG = LANG === "fr" ? "en" : "fr";
+  store.set("lang", LANG);
+  applyLang();
+  if (!$("#night").classList.contains("ringing")) $("#bigMsg").textContent = t("wake");
+  render(); renderChecks();
+  if (armed) updateArmed(); else if (!data) $("#list").innerHTML = `<div class="empty">${t("loading")}</div>`;
+};
 
 try { $("#tz").textContent = Intl.DateTimeFormat().resolvedOptions().timeZone.replace(/_/g, " "); } catch {}
 load();

@@ -1,6 +1,6 @@
 # UFC Fight Alarm - Wake Up Right Before Your Fight (Cloudflare Workers + JavaScript)
 
-> **Live site:** https://ufc-reveil.ufc-reveil.workers.dev (French interface)
+> **Live site:** https://ufc-reveil.ufc-reveil.workers.dev (English and French)
 
 ## 📖 Project Context
 
@@ -20,6 +20,7 @@ UFC Fight Alarm is a personal project built in November 2026. It follows the fig
 - **Keep the screen awake:** Screen Wake Lock API on Android/Chrome, plus a step-by-step bedtime guide for iPhone and Samsung settings (auto-lock, battery saver, volume).
 - **Edge cases handled:** cancelled fights are skipped (the next fight inherits the alarm), fights removed from the card are reported, and the armed alarm survives a page reload.
 - **Search:** filter the card by fighter name.
+- **English and French:** the language follows the browser, can be switched with one tap (remembered on the device) or forced with `?lang=en` / `?lang=fr`.
 - **Python CLI (`ufc_reveil.py`):** interactive fighter selection, local looping alarm on Windows/macOS/Linux, and optional urgent notifications to the phone through [ntfy.sh](https://ntfy.sh).
 
 ## 🏗️ Technical Architecture
@@ -38,6 +39,7 @@ UFC Fight Alarm is a personal project built in November 2026. It follows the fig
 **Frontend - Vanilla HTML/CSS/JavaScript (`worker/public/index.html`)**
 
 - A single page with no framework and no build step: fight list, bedtime guide, night mode, alarm.
+- A small built-in translation dictionary (FR/EN) drives every static and dynamic text, including localized dates.
 - It polls the card every 60 seconds, or every 30 seconds once the alarm is armed.
 
 **Tests**
@@ -53,7 +55,7 @@ UFC Fight Alarm is a personal project built in November 2026. It follows the fig
 
 ## 🎯 How to test the project?
 
-**Online:** open https://ufc-reveil.ufc-reveil.workers.dev on your phone, pick a fight and use "Tester le son" to hear the alarm.
+**Online:** open https://ufc-reveil.ufc-reveil.workers.dev on your phone, pick a fight and use "Test the sound" to hear the alarm.
 
 **Locally (Node.js 18+):**
 
