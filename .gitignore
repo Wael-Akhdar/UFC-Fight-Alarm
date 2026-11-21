@@ -1,0 +1,21 @@
+# Dependencies and local Wrangler state
+node_modules/
+.wrangler/
+.dev.vars
+.env
+.env.*
+
+# Generated at build time (copy of src/logic.js)
+worker/public/logic.js
+
+# Python
+__pycache__/
+*.pyc
+
+# Personal notes, not part of the project
+wifi-backup-*.md
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/

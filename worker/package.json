@@ -1,0 +1,17 @@
+{
+  "name": "ufc-reveil",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --test-scheduled",
+    "deploy": "wrangler deploy",
+    "test": "node --test test/*.test.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "^4.40.0"
+  },
+  "allowScripts": {
+    "workerd@1.20261113.1": true,
+    "esbuild@0.28.2": true
+  }
+}

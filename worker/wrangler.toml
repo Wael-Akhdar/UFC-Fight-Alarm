@@ -1,0 +1,27 @@
+name = "ufc-reveil"
+main = "src/index.js"
+
+compatibility_date = "2025-09-01"
+
+# Le navigateur réutilise la même logique (parsing ESPN + estimations).
+[build]
+command = "cp src/logic.js public/logic.js"
+
+# La page web (public/index.html) est servie telle quelle ; /api/* passe par le worker.
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+# Cron désactivé : les notifs ntfy ont été retirées du site (le réveil se fait dans la page).
+# Pour le réactiver (ex. Pushover) : crons = ["* * * * *"]
+[triggers]
+crons = []
+
+# Mémoire des notifications déjà envoyées.
+# Crée-la avec :  npx wrangler kv namespace create STATE   puis colle l'id ici.
+[[kv_namespaces]]
+binding = "STATE"
+id = "f9dd4d3142ce4a52a797732a707d96de"
+
+[vars]
+NTFY_URL = "https://ntfy.sh"
