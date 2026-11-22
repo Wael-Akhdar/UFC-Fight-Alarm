@@ -1,4 +1,4 @@
-# UFC Fight Alarm - Wake Up Right Before Your Fight (Cloudflare Workers + JavaScript)
+# UFC Fight Alarm - Wake Up Right Before Your Fight
 
 > **Live site:** https://ufc-reveil.ufc-reveil.workers.dev (English and French)
 
